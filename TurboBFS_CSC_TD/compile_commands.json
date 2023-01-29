@@ -1,0 +1,66 @@
+[
+    {
+        "command": "cc -c -O3 -std=gnu99 -Wall -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc -o bfstdcsc_seq_utils.c.o bfstdcsc_seq_utils.c",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfstdcsc_seq_utils.c"
+    },
+    {
+        "command": "cc -c -O3 -std=gnu99 -Wall -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc -o readMMfilef.c.o readMMfilef.c",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/readMMfilef.c"
+    },
+    {
+        "command": "cc -c -O3 -std=gnu99 -Wall -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc -o bfstdcsc_seq.c.o bfstdcsc_seq.c",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfstdcsc_seq.c"
+    },
+    {
+        "command": "cc -c -O3 -std=gnu99 -Wall -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc -o degree.c.o degree.c",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/degree.c"
+    },
+    {
+        "command": "cc -c -O3 -std=gnu99 -Wall -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc -o sparseformatransf.c.o sparseformatransf.c",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/sparseformatransf.c"
+    },
+    {
+        "command": "cc -c -O3 -std=gnu99 -Wall -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc -o bfstdcsc_main.c.o bfstdcsc_main.c",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfstdcsc_main.c"
+    },
+    {
+        "command": "cc -c -O3 -std=gnu99 -Wall -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc -o utils_bfs.c.o utils_bfs.c",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/utils_bfs.c"
+    },
+    {
+        "command": "cc -c -O3 -std=gnu99 -Wall -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc -o mmiof.c.o mmiof.c",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/mmiof.c"
+    },
+    {
+        "command": "cc -c -O3 -std=gnu99 -Wall -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc -o spmvcsc_seq.c.o spmvcsc_seq.c",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/spmvcsc_seq.c"
+    },
+    {
+        "command": "cc -c -O3 -std=gnu99 -Wall -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc -o timer.c.o timer.c",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/timer.c"
+    },
+    {
+        "command": "nvcc -c  -O3 --cuda-gpu-arch=sm_61 -I/usr/local/cuda/include -I//usr/local/cuda/samples/common/inc -o bfsgputdcsc_sc.cu.o -D__CUDACC__=1 bfsgputdcsc_sc.cu",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu"
+    },
+    {
+        "command": "nvcc -c  -O3 --cuda-gpu-arch=sm_61 -I/usr/local/cuda/include -I//usr/local/cuda/samples/common/inc -o bfsgputdcsc_wa.cu.o -D__CUDACC__=1 bfsgputdcsc_wa.cu",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD",
+        "file": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu"
+    },
+    {
+        "command": "ld -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccM1gt8q.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -melf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o exec /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o bfstdcsc_seq_utils.c.o readMMfilef.c.o bfstdcsc_seq.c.o degree.c.o sparseformatransf.c.o bfstdcsc_main.c.o utils_bfs.c.o mmiof.c.o spmvcsc_seq.c.o timer.c.o bfsgputdcsc_sc.cu.o bfsgputdcsc_wa.cu.o --push-state --as-needed --pop-state --push-state --as-needed --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o",
+        "directory": "/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD"
+    }
+]

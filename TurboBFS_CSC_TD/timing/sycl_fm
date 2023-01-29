@@ -1,0 +1,46 @@
+
+N = 262111,M = 262111, nz = 1234877
+maximum in_degree = 420 of node = 14949
+maximum out_degree = 5 of node = 0
+degree statistics:meanInDegree=  4.71,sdInDegree =   5.71,
+degree statistics:meanOutDegree=  4.71,sdOutDegree =   0.95,
+accumulated in-degree distribution
+Degree 0: 0 (0.000 %)
+Degree 2^0: 47950 (18.294 %))
+Degree 2^1: 85492 (32.617 %))
+Degree 2^2: 88547 (33.782 %))
+Degree 2^3: 33048 (12.608 %))
+Degree 2^4: 5783 (2.206 %))
+Degree 2^5: 1039 (0.396 %))
+Degree 2^6: 208 (0.079 %))
+Degree 2^7: 35 (0.013 %))
+Degree 2^8: 9 (0.003 %))
+
+accumulated out-degree distribution
+Degree 0: 4541 (1.732 %)
+Degree 2^0: 3803 (1.451 %))
+Degree 2^1: 12211 (4.659 %))
+Degree 2^2: 241556 (92.158 %))
+
+bfs_seq_ug_csc::d = 72,r = 10 
+bfstdcsc_seq::f <-- f +sigma time = 0.038935s 
+bfstdcsc_seq::f_t <-- fA time = 0.541374s 
+bfstdcsc_seq::f <-- f_t time = 0.046074s 
+bfstdcsc_seq::f <-- f*(-sigma) time = 0.041606s 
+bfstdcsc_seq::S vector time = 0.038270s 
+bfstdcsc_seq::c <-- check (f=0)) time = 0.020384s 
+bfstdcsc_seq::sequential top-down BFS total time = 0.726644s 
+bfs td seq CSC time = 0.726679s
+
+bfsgputdcsc_sc::d = 72,r = 10,t_sum=3524.270508ms 
+bfsgputdcsc_sc::time f <-- fA d = 24.289804ms 
+bfsgputdcsc_sc::time time bfs functions d = 10.952910ms 
+bfsgputdcsc_sc::average time BFS d = 35.242706ms 
+
+check sigma in CSC(sc) format: values of the GPU computed sigma vector are correct 
+
+check values of S_hgpu: values of the GPU computed S vector are correct 
+
+visited vertices == 262107
+
+scan=0.165s,degree_t= 0.021s,transf_format_t=0.002s,bfs_td_seq_t=0.727s

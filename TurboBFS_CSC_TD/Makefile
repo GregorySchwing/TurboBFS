@@ -11,7 +11,7 @@ endif
 
 
 #For NVCC Compiler
-CUDA_DIR=/usr/local/cuda-10.1
+CUDA_DIR=/usr/local/cuda
 NVCC= $(CUDA_DIR)/bin/nvcc
 NVCCFLAGS = -O3 -arch=sm_61 -I$(CUDA_DIR)/include  -I/$(CUDA_DIR)/samples/common/inc -lineinfo  
 NVCCLIBS = -L$(CUDA_DIR)/lib64 -lcufft -lcudart -lcudadevrt  -lcusparse 

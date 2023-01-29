@@ -1,0 +1,198 @@
+---
+MainSourceFile:  '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/migration/bfsgputdcsc.dp.hpp'
+Replacements:
+  - FilePath:        '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc.cuh'
+    Offset:          0
+    Length:          0
+    ReplacementText: "#include <sycl/sycl.hpp>\n#include <dpct/dpct.hpp>\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc.cuh'
+    Offset:          531
+    Length:          11
+    ReplacementText: 'SYCL_EXTERNAL '
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc.cuh'
+    Offset:          635
+    Length:          0
+    ReplacementText: ', sycl::nd_item<3> item_ct1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest:
+  - MainSourceFile:  '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc.cuh'
+    Digest:          336bf59ec9ff6c733463550f1cb3eecb
+DpctVersion:     2023.0.0
+MainHelperFileName: dpct
+USMLevel:        ''
+FeatureMap:
+  device.hpp:
+    destroy_event:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     destroy_event
+      SubFeatureMap:   {}
+    device_ext:
+      IsCalled:        false
+      FeatureName:     ''
+      SubFeatureMap:
+        device_ext_default_queue:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+            - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+          FeatureName:     'device_ext::default_queue'
+          SubFeatureMap:   {}
+        device_ext_queues_wait_and_throw:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+            - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+          FeatureName:     'device_ext::queues_wait_and_throw'
+          SubFeatureMap:   {}
+    get_current_device:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     get_current_device
+      SubFeatureMap:   {}
+    get_default_queue:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     get_default_queue
+      SubFeatureMap:   {}
+    typedef_event_ptr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     typedef_event_ptr
+      SubFeatureMap:   {}
+  memory.hpp:
+    dpct_memcpy:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     dpct_memcpy
+      SubFeatureMap:   {}
+    dpct_memcpy_2d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     dpct_memcpy
+      SubFeatureMap:   {}
+    dpct_memcpy_3d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     dpct_memcpy
+      SubFeatureMap:   {}
+    dpct_memset:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     dpct_memset
+      SubFeatureMap:   {}
+    dpct_memset_2d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     dpct_memset
+      SubFeatureMap:   {}
+    dpct_memset_3d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     dpct_memset
+      SubFeatureMap:   {}
+    memcpy_direction:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_sc.cu'
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     memcpy_direction
+      SubFeatureMap:   {}
+  util.hpp:
+    shift_sub_group_left:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD/bfsgputdcsc_wa.cu'
+      FeatureName:     shift_sub_group_left
+      SubFeatureMap:   {}
+CompileTargets:  {}
+OptionMap:
+  AnalysisScopePath:
+    Value:           '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD'
+    Specified:       false
+  AsyncHandler:
+    Value:           'false'
+    Specified:       false
+  CommentsEnabled:
+    Value:           'false'
+    Specified:       false
+  CompilationsDir:
+    Value:           '/home/greg/Desktop/TurboBFS/TurboBFS_CSC_TD'
+    Specified:       true
+  CtadEnabled:
+    Value:           'false'
+    Specified:       false
+  CustomHelperFileName:
+    Value:           dpct
+    Specified:       false
+  ExperimentalFlag:
+    Value:           '0'
+    Specified:       false
+  ExplicitClNamespace:
+    Value:           'false'
+    Specified:       false
+  ExplicitNamespace:
+    Value:           '20'
+    Specified:       false
+  ExtensionDDFlag:
+    Value:           '0'
+    Specified:       false
+  ExtensionDEFlag:
+    Value:           '4294967295'
+    Specified:       false
+  NDRangeDim:
+    Value:           '3'
+    Specified:       false
+  NoDRYPattern:
+    Value:           'false'
+    Specified:       false
+  OptimizeMigration:
+    Value:           'false'
+    Specified:       false
+  ProcessAll:
+    Value:           'false'
+    Specified:       false
+  RuleFile:
+    Value:           ''
+    Specified:       false
+  SyclNamedLambda:
+    Value:           'false'
+    Specified:       false
+  UsmLevel:
+    Value:           '1'
+    Specified:       false
+...
