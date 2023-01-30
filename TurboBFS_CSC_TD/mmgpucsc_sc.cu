@@ -25,11 +25,12 @@
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
 #include <helper_functions.h>
-#include "bfsgputdcsc.cuh"
+#include "matchgpu.h"
 extern "C"{
                  #include "bfstdcsc.h"
 
 }
+
 
 
 /*************************prototype kernel*************************************/
@@ -81,17 +82,22 @@ int  bfs_gpu_mm_csc_sc (int *IC_h,int *CP_h,int *m_h,int nz,int n,int repetition
   int *c;
   checkCudaErrors(cudaMallocManaged(reinterpret_cast<void **>(&c),sizeof(*c)));
 
-  /*computing BFS */
+  /*computing MM */
   dimGrid = (n + THREADS_PER_BLOCK)/THREADS_PER_BLOCK;
   for (i = 0; i<repetition; i++){
     *c = 1;
     d = 0;
     checkCudaErrors(cudaMemset(req_d,0,sizeof(*req_d)*n));
+    checkCudaErrors(cudaMemset(m_d,0,sizeof(*m_d)*n));
     while (*c){
-      d = d + 1;
-      *c = 0;
+      //d = d + 1;
+      //*c = 0;
 
       cudaEventRecord(start);
+      gaSelect<<<dimGrid,THREADS_PER_BLOCK>>>(m_d, c, n, rand());
+      grRequest<<<dimGrid,THREADS_PER_BLOCK>>>(CP_d,IC_d,req_d, m_d, n);
+      grRespond<<<dimGrid,THREADS_PER_BLOCK>>>(CP_d,IC_d,req_d, m_d, n);
+      gMatch<<<dimGrid,THREADS_PER_BLOCK>>>(m_d, req_d, n);
       //spMvUgCscScKernel <<<dimGrid,THREADS_PER_BLOCK>>> (CP_d,IC_d,ft_d,f_d,sigma_d,d,r,n);
       cudaEventRecord(stop);
       cudaEventSynchronize(stop);
@@ -108,7 +114,7 @@ int  bfs_gpu_mm_csc_sc (int *IC_h,int *CP_h,int *m_h,int nz,int n,int repetition
       t_sum += t_spmv + t_bfsfunctions;
     }
   }
-  printf("\bfs_gpu_mm_csc_sc::t_sum=%lfms \n",t_sum);
+  printf("bfs_gpu_mm_csc_sc::t_sum=%lfms \n",t_spmv_t);
   t_bfs_avg = t_sum/repetition;
 
   /*Copy device memory (m_d) to host memory (S_h)*/
