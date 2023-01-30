@@ -231,8 +231,8 @@ void spMvUgCscScKernel_b (int *CP_d,int *IC_d,int *ft_d,int *f_d,int *m_d,
       int sum = 0;
       //for (k = start;k < end; k++){
       int m = m_d[i];
-      if (m > 3)
-	      sum += f_d[IC_d[m-3]];
+      if (m > -1)
+	      sum += f_d[IC_d[m]];
       //}
       if (sum > 0.9) {
 	ft_d[i] = sum;

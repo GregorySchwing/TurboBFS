@@ -30,9 +30,9 @@ extern "C"{
                  #include "bfstdcsc.h"
 
 }
-
-
-
+#include <thrust/device_ptr.h>
+#include <thrust/functional.h>
+#include <thrust/transform.h>
 /*************************prototype kernel*************************************/
 __global__ void spMvUgCscScKernel (int *CP_d,int *IC_d,int *ft_d,int *f_d,
 				   float *sigma_d,int j,int r,int n);
@@ -102,6 +102,9 @@ int  bfs_gpu_mm_csc_sc (int *IC_h,int *CP_h,int *m_h,int nz,int n,int repetition
   }
   printf("\nbfs_gpu_mm_csc_sc::t_sum=%lfms \n",t_spmv_t);
 
+  using namespace thrust::placeholders;
+  thrust::device_ptr<int> m_vec=thrust::device_pointer_cast(m_d);
+  thrust::for_each(m_vec, m_vec+n, _1 -= 4);
   /*Copy device memory (m_d) to host memory (S_h)*/
   checkCudaErrors(cudaMemcpy(m_h,m_d, n*sizeof(*m_d),cudaMemcpyDeviceToHost));
 
