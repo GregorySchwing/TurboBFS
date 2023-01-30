@@ -56,6 +56,17 @@ int  bfs_gpu_td_csc_sc (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
 
 /**************************************************************************/
 /* 
+ * Function to compute a gpu-based parallel top-down BFS (scalar) for 
+ * unweighted graphs represented by sparse adjacency matrices in CSC format,
+ * including the computation of the S vector to store the depth at which each  
+ * vertex is  discovered.
+ *  
+ */
+int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
+			int nz,int n,int repetition);
+
+/**************************************************************************/
+/* 
  * function to compute a gpu-based parallel top-down BFS (warp shuffle) for
  * unweighted graphs represented by sparse adjacency matrices in CSC format,
  * including the computation of the S vector to store the depth at which each 

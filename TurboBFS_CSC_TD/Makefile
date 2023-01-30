@@ -1,20 +1,22 @@
  CC=gcc
-#For GNU compiler
-ifeq ($(CC),gcc)
-	CC=gcc
-	CXX=g++
-	CFLAGS=  -O3 -g -std=gnu99 -Wall  -I/usr/local/cuda-10.1/include -I/usr/local/cuda-10.1/samples/common/inc
-	CXXFLAGS= -O3 -g -Wall
-	LDFLAGS= -O3 -g
-	LDLIBS=  -lm -lstdc++  -L/usr/local/cuda-10.1/lib64 -lcufft -lcudart
-endif
-
 
 #For NVCC Compiler
 CUDA_DIR=/usr/local/cuda
 NVCC= $(CUDA_DIR)/bin/nvcc
 NVCCFLAGS = -O3 -arch=sm_61 -I$(CUDA_DIR)/include  -I/$(CUDA_DIR)/samples/common/inc -lineinfo  
 NVCCLIBS = -L$(CUDA_DIR)/lib64 -lcufft -lcudart -lcudadevrt  -lcusparse 
+
+#For GNU compiler
+ifeq ($(CC),gcc)
+	CC=gcc
+	CXX=g++
+	CFLAGS=  -O3 -g -std=gnu99 -Wall  -I${CUDADIR}/include -I${CUDADIR}/samples/common/inc
+	CXXFLAGS= -O3 -g -Wall
+	LDFLAGS= -O3 -g
+	LDLIBS=  -lm -lstdc++  -L${CUDADIR}lib64 -lcufft -lcudart
+endif
+
+
 
 ifeq ($(CC),nvcc)
 	CC=$(NVCC)
