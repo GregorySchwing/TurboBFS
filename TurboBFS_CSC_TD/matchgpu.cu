@@ -183,7 +183,7 @@ __global__ void grRequest(int *CP_d,int *IC_d,int *requests, const int *match, c
 			const int nm = match[ni];
 
 			//Do we have an unmatched neighbour?
-			if (nm < 4)
+			if (nm < 4 && i!=ni)
 			{
 				//Is this neighbour red?
 				if (nm == 1)
@@ -196,7 +196,6 @@ __global__ void grRequest(int *CP_d,int *IC_d,int *requests, const int *match, c
 				dead = 0;
 			}
 		}
-
 		requests[i] = nrVertices + dead;
 	}
 	else
