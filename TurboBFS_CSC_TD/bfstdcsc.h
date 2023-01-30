@@ -62,7 +62,7 @@ int  bfs_gpu_td_csc_sc (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
  * vertex is  discovered.
  *  
  */
-int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
+int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,int *m_h,float *sigma_h,int r,
 			int nz,int n,int repetition);
 
 /**************************************************************************/

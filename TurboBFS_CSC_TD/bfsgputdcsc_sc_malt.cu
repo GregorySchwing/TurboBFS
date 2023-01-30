@@ -50,7 +50,7 @@ __global__ void spMvUgCscScKernel_b (int *CP_d,int *IC_d,int *ft_d,int *f_d,int 
  * vertex is  discovered.
  *  
  */
-int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
+int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,int *m_h,float *sigma_h,int r,
 			int nz,int n,int repetition){
   float t_spmv;
   float t_spmv_t = 0.0;
@@ -95,7 +95,11 @@ int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
   /*allocate unified memory for integer variable c for control of while loop*/
   int *c;
   checkCudaErrors(cudaMallocManaged(reinterpret_cast<void **>(&c),sizeof(*c)));
+
   int *m_d;
+  checkCudaErrors(cudaMalloc(reinterpret_cast<void **>(&m_d),sizeof(*m_d)*(n)));
+  /*Copy host memory (CP_h) to device memory (CP_d)*/
+  checkCudaErrors(cudaMemcpy(m_d,m_h,n*sizeof(*m_d),cudaMemcpyHostToDevice));
 
   /*computing BFS */
   dimGrid = (n + THREADS_PER_BLOCK)/THREADS_PER_BLOCK;
@@ -113,7 +117,6 @@ int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
         cudaEventRecord(stop);
         cudaEventSynchronize(stop);
         cudaEventElapsedTime(&t_spmv,start,stop);
-      t_spmv_t += t_spmv;
       } else {
         cudaEventRecord(start);
         spMvUgCscScKernel_b <<<dimGrid,THREADS_PER_BLOCK>>> (CP_d,IC_d,ft_d,f_d,m_d,sigma_d,d,r,n);
@@ -121,6 +124,8 @@ int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
         cudaEventSynchronize(stop);
         cudaEventElapsedTime(&t_spmv,start,stop);
       }
+      t_spmv_t += t_spmv;
+
       cudaEventRecord(start);
       bfsFunctionsKernel <<<dimGrid,THREADS_PER_BLOCK>>> (f_d,ft_d,sigma_d,S_d,c,n,d);
       cudaEventRecord(stop);
