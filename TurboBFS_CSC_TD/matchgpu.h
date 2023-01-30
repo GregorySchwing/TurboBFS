@@ -17,6 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MATCH_MATCH_GPU_H
 #define MATCH_MATCH_GPU_H
 
+#define NR_MATCH_ROUNDS 20
+#define NR_MAX_MATCH_ROUNDS 256
+
 __global__ void gSelect(int *match, int *dkeepMatching, const int nrVertices, const uint random);
 __global__ void gaSelect(int *match, int *dkeepMatching, const int nrVertices, const uint random);
 __global__ void gMatch(int *match, const int *requests, const int nrVertices);

@@ -69,6 +69,8 @@ int main(int argc, char *argv[]){
   int M,N,nz;
   int i,j;
   int *RP,*JC,*S,*S_hgpu;
+  // matching
+  int *m_h;
   int *out_degree,*in_degree,*degree;
   int *degreeDist,*degreeDistAc;
   double *degreeDistRel,*degreeDistRelAc;
@@ -143,6 +145,9 @@ int main(int argc, char *argv[]){
     if (w) valCLT = (float *) calloc(nz,sizeof(*valCLT));
     degree = (int *) calloc(N,sizeof(*degree));
   }
+
+  /* matching host vector */
+  m_h = (int *) calloc(N,sizeof(*m_h));
 
   /***************************************************************************
     read Matrix Market file and compute the in-degree and out-degree vectors            
@@ -278,6 +283,14 @@ int main(int argc, char *argv[]){
     bfs_seq_td_csc (CscA.IC,CscA.CP,S,sigma,r,nz,N);
     bfs_td_seq_t = get_time()-initial_t;
     printf("bfs td seq CSC time = %lfs\n", bfs_td_seq_t);
+  }
+
+  /**************************************************************************
+     compute GPU-based parallel maximal matching for unweighted graphs represented 
+     by sparse adjacency matrices in the CSC format 
+  **************************************************************************/
+  if (format == 0){// CSC(sc) format
+    bfs_gpu_mm_csc_sc (CscA.IC,CscA.CP,m_h,nz,N,repet);
   }
 
   /**************************************************************************

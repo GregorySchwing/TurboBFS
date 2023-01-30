@@ -86,13 +86,14 @@ int  bfs_gpu_mm_csc_sc (int *IC_h,int *CP_h,int *m_h,int nz,int n,int repetition
   dimGrid = (n + THREADS_PER_BLOCK)/THREADS_PER_BLOCK;
   for (i = 0; i<repetition; i++){
     *c = 1;
-    d = 0;
+    //d = 0;
     checkCudaErrors(cudaMemset(req_d,0,sizeof(*req_d)*n));
     checkCudaErrors(cudaMemset(m_d,0,sizeof(*m_d)*n));
-    while (*c){
+    int count = 0;
+    while (*c && ++count < NR_MAX_MATCH_ROUNDS){
       //d = d + 1;
-      //*c = 0;
-
+      *c = 0;
+      printf("Iteration %d\n", count);
       cudaEventRecord(start);
       gaSelect<<<dimGrid,THREADS_PER_BLOCK>>>(m_d, c, n, rand());
       grRequest<<<dimGrid,THREADS_PER_BLOCK>>>(CP_d,IC_d,req_d, m_d, n);
@@ -112,6 +113,19 @@ int  bfs_gpu_mm_csc_sc (int *IC_h,int *CP_h,int *m_h,int nz,int n,int repetition
       t_bfsfunctions_t += t_bfsfunctions;
       
       t_sum += t_spmv + t_bfsfunctions;
+      checkCudaErrors(cudaMemcpy(m_h,m_d,n*sizeof(*m_h),cudaMemcpyDeviceToHost));
+      int matched = 0, red = 0, blue = 0, dead = 0;
+      for (int i = 0; i < n; ++i){
+        if (!m_h[i])
+          ++blue;
+        else if (m_h[i] == 1)
+          ++red;
+        else if (m_h[i] == 2)
+          ++dead;
+        else if (m_h[i] > 2)
+          ++matched;
+      }
+      printf("it::red %d blue %d dead %d matched %d\n",red,blue,dead,matched);
     }
   }
   printf("bfs_gpu_mm_csc_sc::t_sum=%lfms \n",t_spmv_t);
