@@ -65,7 +65,8 @@ __global__ void gSelect(int *match, int *dkeepMatching, const int nrVertices, co
 	if (i >= nrVertices) return;
 
 	//Can this vertex still be matched?
-	if (match[i] >= 2) return;
+	//if (match[i] >= 2) return;
+	if (match[i] >= 3) return;
 
 	//Start hashing.
 	uint h0 = 0x67452301, h1 = 0xefcdab89, h2 = 0x98badcfe, h3 = 0x10325476;
@@ -101,8 +102,9 @@ __global__ void gaSelect(int *match, int *dkeepMatching, const int nrVertices, c
 	if (i >= nrVertices) return;
 
 	//Can this vertex still be matched?
-	if (match[i] >= 2) return;
-
+	//if (match[i] >= 2) return;
+	if (match[i] >= 3) return;
+	
 	//Use atomic operations to indicate whether we are done.
 	//atomicCAS(&dkeepMatching, 0, 1);
 	*dkeepMatching = 1;
@@ -145,7 +147,8 @@ __global__ void gMatch(int *match, const int *requests, const int nrVertices)
 	if (r == nrVertices + 1)
 	{
 		//This is vertex without any available neighbours, discard it.
-		match[i] = 2;
+		match[i] = 3;
+		//match[i] = 2;
 	}
 	else if (r < nrVertices)
 	{

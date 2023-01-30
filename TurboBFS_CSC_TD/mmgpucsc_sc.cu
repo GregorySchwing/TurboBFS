@@ -48,7 +48,6 @@ __global__ void spMvUgCscScKernel (int *CP_d,int *IC_d,int *ft_d,int *f_d,
 int  bfs_gpu_mm_csc_sc (int *IC_h,int *CP_h,int *m_h,int nz,int n,int repetition){
   float t_spmv;
   float t_spmv_t = 0.0;
-  float t_sum = 0.0;
   int i,dimGrid;
   cudaEvent_t start, stop;
   cudaEventCreate(&start);
@@ -90,35 +89,18 @@ int  bfs_gpu_mm_csc_sc (int *IC_h,int *CP_h,int *m_h,int nz,int n,int repetition
     while (*c && ++count < NR_MAX_MATCH_ROUNDS){
       //d = d + 1;
       *c = 0;
-      //printf("Iteration %d\n", count);
       cudaEventRecord(start);
       gaSelect<<<dimGrid,THREADS_PER_BLOCK>>>(m_d, c, n, rand());
       grRequest<<<dimGrid,THREADS_PER_BLOCK>>>(CP_d,IC_d,req_d, m_d, n);
       grRespond<<<dimGrid,THREADS_PER_BLOCK>>>(CP_d,IC_d,req_d, m_d, n);
       gMatch<<<dimGrid,THREADS_PER_BLOCK>>>(m_d, req_d, n);
-      //spMvUgCscScKernel <<<dimGrid,THREADS_PER_BLOCK>>> (CP_d,IC_d,ft_d,f_d,sigma_d,d,r,n);
       cudaEventRecord(stop);
       cudaEventSynchronize(stop);
       cudaEventElapsedTime(&t_spmv,start,stop);
       t_spmv_t += t_spmv;
-      /*
-      checkCudaErrors(cudaMemcpy(m_h,m_d,n*sizeof(*m_h),cudaMemcpyDeviceToHost));
-      int matched = 0, red = 0, blue = 0, dead = 0;
-      for (int i = 0; i < n; ++i){
-        if (!m_h[i])
-          ++blue;
-        else if (m_h[i] == 1)
-          ++red;
-        else if (m_h[i] == 2)
-          ++dead;
-        else if (m_h[i] > 2)
-          ++matched;
-      }
-      printf("it::red %d blue %d dead %d matched %d\n",red,blue,dead,matched);
-      */
     }
   }
-  printf("bfs_gpu_mm_csc_sc::t_sum=%lfms \n",t_spmv_t);
+  printf("\nbfs_gpu_mm_csc_sc::t_sum=%lfms \n",t_spmv_t);
 
   /*Copy device memory (m_d) to host memory (S_h)*/
   checkCudaErrors(cudaMemcpy(m_h,m_d, n*sizeof(*m_d),cudaMemcpyDeviceToHost));

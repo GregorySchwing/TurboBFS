@@ -291,6 +291,7 @@ int main(int argc, char *argv[]){
   **************************************************************************/
   if (format == 0){// CSC(sc) format
     bfs_gpu_mm_csc_sc (CscA.IC,CscA.CP,m_h,nz,N,repet);
+    bfs_gpu_td_csc_sc_malt (CscA.IC,CscA.CP,S_hgpu,m_h,sigma_hgpu,r,nz,N,repet);
   }
 
   /**************************************************************************
