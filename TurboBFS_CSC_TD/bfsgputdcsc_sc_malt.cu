@@ -33,7 +33,7 @@ extern "C"{
 
 
 /*************************prototype kernel*************************************/
-__global__ void spMvUgCscScKernel_a (int *CP_d,int *IC_d,int *ft_d,int *f_d,
+__global__ void spMvUgCscScKernel_a (int *CP_d,int *IC_d,int *ft_d,int *f_d,int *m_d,
 				   float *sigma_d,int j,int r,int n);
 /******************************************************************************/
 
@@ -113,7 +113,7 @@ int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,int *m_h,float *sigma_
       *c = 0;
       if ((d-1)%2 == 0){
         cudaEventRecord(start);
-        spMvUgCscScKernel_a <<<dimGrid,THREADS_PER_BLOCK>>> (CP_d,IC_d,ft_d,f_d,sigma_d,d,r,n);
+        spMvUgCscScKernel_a <<<dimGrid,THREADS_PER_BLOCK>>> (CP_d,IC_d,ft_d,f_d,m_d,sigma_d,d,r,n);
         cudaEventRecord(stop);
         cudaEventSynchronize(stop);
         cudaEventElapsedTime(&t_spmv,start,stop);
@@ -175,15 +175,15 @@ int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,int *m_h,float *sigma_
  * graphs. 
  */
 __global__
-void spMvUgCscScKernel_a (int *CP_d,int *IC_d,int *ft_d,int *f_d,
+void spMvUgCscScKernel_a (int *CP_d,int *IC_d,int *ft_d,int *f_d,int *m_d,
 			float *sigma_d,int d,int r,int n){
 
   int i = threadIdx.x + blockIdx.x * blockDim.x;
   if(i < n){
     //initialize f(r) and sigma(r)
-    if (d == 1){
-      f_d[r] = 1;
-      sigma_d[r] = 1.0;
+    if (d == 1 && m_d[i] == -1){
+      f_d[i] = 1;
+      sigma_d[i] = 1.0;
     }
     //compute spmv
     ft_d[i] = 0;
