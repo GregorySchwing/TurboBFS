@@ -284,6 +284,8 @@ int main(int argc, char *argv[]){
     bfs_td_seq_t = get_time()-initial_t;
     printf("bfs td seq CSC time = %lfs\n", bfs_td_seq_t);
   }
+  
+
 
   /**************************************************************************
      compute GPU-based parallel maximal matching for unweighted graphs represented 
@@ -291,6 +293,7 @@ int main(int argc, char *argv[]){
   **************************************************************************/
   if (format == 0){// CSC(sc) format
     bfs_gpu_mm_csc_sc (CscA.IC,CscA.CP,m_h,nz,N,repet);
+    bfs_seq_td_csc_malt (CscA.IC,CscA.CP,S,sigma,m_h,nz,N);
     bfs_gpu_td_csc_sc_malt (CscA.IC,CscA.CP,S_hgpu,m_h,sigma_hgpu,r,nz,N,repet);
   }
 

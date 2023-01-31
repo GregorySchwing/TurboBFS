@@ -136,7 +136,7 @@ int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,int *m_h,float *sigma_
       t_sum += t_spmv + t_bfsfunctions;
     }
   }
-  printf("\nbfsgputdcsc_sc_malt::d = %d,r = %d,t_sum=%lfms \n",d,r,t_sum);
+  printf("\nbfsgputdcsc_sc_malt::d = %d,t_sum=%lfms \n",d,t_sum);
   t_bfs_avg = t_sum/repetition;
 
   /*Copy device memory (sigma_d) to host memory (sigma_h)*/
@@ -181,10 +181,14 @@ void spMvUgCscScKernel_a (int *CP_d,int *IC_d,int *ft_d,int *f_d,int *m_d,
   int i = threadIdx.x + blockIdx.x * blockDim.x;
   if(i < n){
     //initialize f(r) and sigma(r)
-    if (d == 1 && m_d[i] == -1){
+    if (d == 1 && m_d[i] < 0){
       f_d[i] = 1;
       sigma_d[i] = 1.0;
     }
+    //if (d == 1){
+    //  f_d[r] = 1;
+    //  sigma_d[r] = 1.0;
+    //}
     //compute spmv
     ft_d[i] = 0;
     if (sigma_d[i] < 0.01){
@@ -232,7 +236,7 @@ void spMvUgCscScKernel_b (int *CP_d,int *IC_d,int *ft_d,int *f_d,int *m_d,
       //for (k = start;k < end; k++){
       int m = m_d[i];
       if (m > -1)
-	      sum += f_d[IC_d[m]];
+	      sum += f_d[m];
       //}
       if (sum > 0.9) {
 	ft_d[i] = sum;

@@ -104,7 +104,7 @@ __global__ void gaSelect(int *match, int *dkeepMatching, const int nrVertices, c
 	//Can this vertex still be matched?
 	//if (match[i] >= 2) return;
 	if (match[i] >= 3) return;
-	
+
 	//Use atomic operations to indicate whether we are done.
 	//atomicCAS(&dkeepMatching, 0, 1);
 	*dkeepMatching = 1;
@@ -184,6 +184,7 @@ __global__ void grRequest(int *CP_d,int *IC_d,int *requests, const int *match, c
 		{
 			const int ni = IC_d[k];
 			const int nm = match[ni];
+			//printf("neighbors of %d : %d\n", i, ni);
 
 			//Do we have an unmatched neighbour?
 			if (nm < 4 && i!=ni)
