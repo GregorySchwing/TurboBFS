@@ -1,5 +1,5 @@
 TEST="1"
-DATA="/lclhome/oarti001/documents/cuBFS/graphData" #update this path
+DATA="../graphData" #update this path
 
 
 for file in mycielskian4
