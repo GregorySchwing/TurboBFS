@@ -29,13 +29,10 @@ int spmv_seq_ug_csc_malt_a (float *f,int *I,int *CP,float *f_t,int n){
     sum = 0.0;
     start = CP[i];
     end = CP[i+1];
-    printf("i %d start %d end %d \n", i, start, end);
     for (k=start; k<end; k++){
-      printf("i %d start %d end %d k %d I[k] %d f[IK} %f \n", i, start, end, k, I[k], f[I[k]]);
       sum += f[I[k]];
     }
     if (sum > 0.1){
-      printf("Expanding %d\n", i);
       f_t[i] = sum;
     }
   }
@@ -62,7 +59,6 @@ int spmv_seq_ug_csc_malt_b (float *f,int *I,int *CP,int *m_h,float *f_t,int n){
     int m = m_h[i];
     if (m > -1){
       sum += f[m];
-      printf("i %d m %d f[m] %f\n", i, m, f[m]);
     }
     if (sum > 0.1){
       f_t[i] = sum;

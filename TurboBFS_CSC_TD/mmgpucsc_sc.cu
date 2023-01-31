@@ -107,8 +107,7 @@ int  bfs_gpu_mm_csc_sc (int *IC_h,int *CP_h,int *m_h,int nz,int n,int repetition
   thrust::for_each(m_vec, m_vec+n, _1 -= 4);
   /*Copy device memory (m_d) to host memory (S_h)*/
   checkCudaErrors(cudaMemcpy(m_h,m_d, n*sizeof(*m_d),cudaMemcpyDeviceToHost));
-  for (int i = 0; i < n; ++i)
-    printf("%d ", m_h[i]);
+
   int print_t = 1;
   if (print_t){
     printf("bfs_gpu_mm_csc_sc::average time mm d = %lfms \n",t_spmv_t/repetition);
