@@ -156,7 +156,10 @@ __global__ void gMatch(int *match, const int *requests, const int nrVertices)
 		if (requests[r] == i)
 		{
 			//Match the vertices if the request was mutual.
-			match[i] = 4 + min(i, r);
+			//match[i] = 4 + min(i, r);
+			// I need a pointer to the match for traversal.
+			match[i] = 4 + r;
+
 		}
 	}
 }

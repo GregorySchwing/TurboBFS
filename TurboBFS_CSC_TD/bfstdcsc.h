@@ -45,6 +45,16 @@ int bfs_seq_td_csc (int *IC,int *CP,int *S,float *sigma,int r,int nz,int n);
 
 /**************************************************************************/
 /* 
+ * Function to compute a sequential top-down BFS for unweighted graphs,
+ * represented by sparse adjacency matrices in CSC format, including the  
+ * computation of the S vector to store the depth at which each vertex is
+ * discovered.    
+ *  
+*/
+int bfs_seq_td_csc_malt (int *IC,int *CP,int *S,float *sigma,int *m_h,int nz,int n);
+
+/**************************************************************************/
+/* 
  * Function to compute a gpu-based parallel top-down BFS (scalar) for 
  * unweighted graphs represented by sparse adjacency matrices in CSC format,
  * including the computation of the S vector to store the depth at which each  

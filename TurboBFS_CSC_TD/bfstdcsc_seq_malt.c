@@ -32,11 +32,18 @@ int bfs_seq_td_csc_malt (int *IC,int *CP,int *S,float *sigma,int *m_h,int nz,int
     float *f_t;
     f =  (float *) calloc(n,sizeof(*f));
     f_t =  (float *) calloc(n,sizeof(*f_t));
+    for (int i = 0; i < n; i++) S[i] = -1;
     // Set multiple srcs.
     for (int r = 0; r < n; ++r){
-      if (m_h[r] < 0)
+      if (m_h[r] < 0){
         f[r] = 1;
+        S[r] = d;
+      }
     }
+    for (int r = 0; r < n; ++r){
+        printf("%f ",f[r]);
+    }
+    //f[r] = 1;
     /* timing variables  */
     double initial_t;
     double delta;
@@ -57,28 +64,43 @@ int bfs_seq_td_csc_malt (int *IC,int *CP,int *S,float *sigma,int *m_h,int nz,int
       
       initial_t = get_time();
       if ((d-1)%2 == 0){
-        spmv_seq_ug_csc (f,IC,CP,f_t,n);
+        printf("calling spmv_seq_ug_csc d %d\n", d);
+        spmv_seq_ug_csc_malt_a (f,IC,CP,f_t,n);
       } else {
+        printf("calling spmv_seq_ug_csc_malt_b d %d\n", d);
         spmv_seq_ug_csc_malt_b (f,IC,CP,m_h,f_t,n);
       }
       delta = get_time()-initial_t;
       spmv_t += delta;
-      
+      for (int r = 0; r < n; ++r){
+        printf("%f ",f[r]);
+      }
+      printf("\n"); 
       initial_t = get_time();
       assign_v(f,f_t,n);
       delta = get_time()-initial_t;
       assign_v_t += delta;
-      
+      for (int r = 0; r < n; ++r){
+        printf("%f ",f[r]);
+      }
+      printf("\n"); 
       initial_t = get_time();
       mult_vs (sigma,f,n);
       delta = get_time()-initial_t;
       mult_vs_t += delta;
-
+printf("Multi\n");
+      for (int r = 0; r < n; ++r){
+        printf("%f ",f[r]);
+      }
+      printf("\n");
       initial_t = get_time();
       S_v (S,f,n,d);
       delta = get_time()-initial_t;
       S_v_t += delta;
-      
+      for (int r = 0; r < n; ++r){
+        printf("%f ",f[r]);
+      }
+      printf("\n");
       initial_t = get_time();
       c = 0;
       check_f(&c,f,n);

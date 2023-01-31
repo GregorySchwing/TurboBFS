@@ -285,17 +285,11 @@ int main(int argc, char *argv[]){
     printf("bfs td seq CSC time = %lfs\n", bfs_td_seq_t);
   }
 
-  printf("CP\n");
-  for (int i = 0; i < N+1; ++i)
-    printf("%d ", CscA.CP[i]);
-      printf("IC\n");
-  for (int i = 0; i < nz; ++i)
-    printf("%d ", CscA.IC[i]);
   /**************************************************************************
      compute GPU-based parallel maximal matching for undirected, unweighted graphs represented 
      by sparse adjacency matrices in the CSC format 
   **************************************************************************/
-  if (format == 1){// CSC(sc) format
+  if (format == 1){// CSC(wa) format
     bfs_gpu_mm_csc_sc (CscA.IC,CscA.CP,m_h,nz,N,repet);
     bfs_seq_td_csc_malt (CscA.IC,CscA.CP,S,sigma,m_h,nz,N);
     bfs_gpu_td_csc_sc_malt (CscA.IC,CscA.CP,S_hgpu,m_h,sigma_hgpu,r,nz,N,repet);
