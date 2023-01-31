@@ -32,12 +32,12 @@ int bfs_seq_td_csc_malt (int *IC,int *CP,int *S,float *sigma,int *m_h,int nz,int
     float *f_t;
     f =  (float *) calloc(n,sizeof(*f));
     f_t =  (float *) calloc(n,sizeof(*f_t));
-    for (int i = 0; i < n; i++) S[i] = -1;
     // Set multiple srcs.
     for (int r = 0; r < n; ++r){
+      S[r] = 0;
+      sigma[r] = 0.0;
       if (m_h[r] < 0){
         f[r] = 1;
-        S[r] = d;
       }
     }
     for (int r = 0; r < n; ++r){
