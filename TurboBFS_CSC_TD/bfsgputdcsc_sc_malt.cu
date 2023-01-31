@@ -136,7 +136,7 @@ int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,int *m_h,float *sigma_
       t_sum += t_spmv + t_bfsfunctions;
     }
   }
-  printf("\nbfsgputdcsc_sc_malt::d = %d,t_sum=%lfms \n",d,t_sum);
+  printf("\nbfsgputdcsc_wa_malt::d = %d,t_sum=%lfms \n",d,t_sum);
   t_bfs_avg = t_sum/repetition;
 
   /*Copy device memory (sigma_d) to host memory (sigma_h)*/
@@ -147,9 +147,9 @@ int  bfs_gpu_td_csc_sc_malt (int *IC_h,int *CP_h,int *S_h,int *m_h,float *sigma_
 
   int print_t = 1;
   if (print_t){
-    printf("bfsgputdcsc_sc_malt::time f <-- fA d = %lfms \n",t_spmv_t/repetition);
-    printf("bfsgputdcsc_sc_malt::time time bfs functions d = %lfms \n", t_bfsfunctions_t/repetition);
-    printf("bfsgputdcsc_sc_malt::average time BFS d = %lfms \n",t_bfs_avg);
+    printf("bfsgputdcsc_wa_malt::time f <-- fA d = %lfms \n",t_spmv_t/repetition);
+    printf("bfsgputdcsc_wa_malt::time time bfs functions d = %lfms \n", t_bfsfunctions_t/repetition);
+    printf("bfsgputdcsc_wa_malt::average time BFS d = %lfms \n",t_bfs_avg);
   }
 
   /*cleanup memory*/
