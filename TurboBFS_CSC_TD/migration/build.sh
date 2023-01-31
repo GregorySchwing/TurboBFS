@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #sycl standard build
-clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda *.cpp *.c -o sycl-app
+#clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda *.cpp *.c -o sycl-app
 #For NVCC Compiler
 
 #CUDA_DIR=/usr/local/cuda
@@ -16,3 +16,7 @@ clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda *.cpp *.c -o sycl-app
 
 # Fast math, not targetable to cuda
 #clang++ -fsycl -ffast-math *.cpp *.c -o sycl-app
+
+# O3 with early opt
+clang++ -fsycl -fast -fsycl-targets=nvptx64-nvidia-cuda *.cpp *.c -o sycl-app
+
