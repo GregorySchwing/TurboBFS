@@ -76,7 +76,6 @@ int  bfs_gpu_td_csc_wa (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int* r,
   /*Allocate device memory for the vector r_d, and set r_d to zero. */
   int *r_d;
   checkCudaErrors(cudaMalloc(reinterpret_cast<void **>(&r_d),sizeof(*r_d)*n));
-  checkCudaErrors(cudaMemcpy(r_d,r,n*sizeof(*r_d),cudaMemcpyHostToDevice));
 
   /*Allocate device memory for the vector sigma_d */
   float *sigma_d;
@@ -85,6 +84,23 @@ int  bfs_gpu_td_csc_wa (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int* r,
   /*Allocate device memory for the vector f_d*/
   int *f_d;
   checkCudaErrors(cudaMalloc(reinterpret_cast<void **>(&f_d),sizeof(*f_d)*n));
+
+  //initialize f(r) and sigma(r)
+
+  float *sigma_h2;
+  int *f_h2;
+  /* allocate memory for vectors */
+  sigma_h2 = (float *) calloc((n),sizeof(*sigma_h));
+  f_h2 = (int *) calloc((n),sizeof(*f_h2));
+
+  for (int i = 0; i < n;i++){
+    if (r[i]){
+        f_h2[i] = 1;
+        sigma_h2[i] = 1.0;
+    }
+  }
+  checkCudaErrors(cudaMemcpy(sigma_d,sigma_h2,n*sizeof(*sigma_d),cudaMemcpyHostToDevice));
+  checkCudaErrors(cudaMemcpy(f_d,f_h2,n*sizeof(*f_d),cudaMemcpyHostToDevice));
 
   /*Allocate device memory for the vector ft_d*/
   int *ft_d;
@@ -100,8 +116,11 @@ int  bfs_gpu_td_csc_wa (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int* r,
   for (i = 0; i<repetition; i++){
     *c = 1;
     d = 0;
-    checkCudaErrors(cudaMemset(f_d,0,sizeof(*f_d)*n));
-    checkCudaErrors(cudaMemset(sigma_d,0,sizeof(*sigma_d)*n));  
+    //checkCudaErrors(cudaMemset(f_d,0,sizeof(*f_d)*n));
+    //checkCudaErrors(cudaMemset(sigma_d,0,sizeof(*sigma_d)*n));  
+    checkCudaErrors(cudaMemcpy(sigma_d,sigma_h2,n*sizeof(*sigma_d),cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(f_d,f_h2,n*sizeof(*f_d),cudaMemcpyHostToDevice));
+
     while (*c){
       d = d+1;
       *c = 0;
@@ -175,12 +194,6 @@ void spMvUgCscWaKernel (int *CP_d,int *IC_d,int *ft_d,int *f_d,
   int warp_id = thread_id/THREADS_PER_WARP; //global warp index
   int warp_lane_id = threadIdx.x/ THREADS_PER_WARP; //warp index within the block
   int num_warps =  WARPS_PER_BLOCK*gridDim.x;       //total number of available warps
-
-  //initialize f(r) and sigma(r)
-  if (d == 1 && r[warp_id]){
-      f_d[warp_id] = 1;
-      sigma_d[warp_id] = 1.0;
-  }
 
   int col;
   int icp;
