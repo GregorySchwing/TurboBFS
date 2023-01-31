@@ -33,7 +33,7 @@ extern "C"{
 
 /*************************prototype kernel MVS*********************************/
 __global__ void spMvUgCscWaKernel (int *CP_d,int *IC_d,int *ft_d,int *f_d,
-				   float *sigma_d,int d,int r,int n);
+				   float *sigma_d,int d,int* r,int n);
 /******************************************************************************/
 
 /* 
@@ -43,7 +43,7 @@ __global__ void spMvUgCscWaKernel (int *CP_d,int *IC_d,int *ft_d,int *f_d,
  * vertex is discovered.
  *  
  */
-int  bfs_gpu_td_csc_wa (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
+int  bfs_gpu_td_csc_wa (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int* r,
 			int nz,int n,int repetition){
   float t_spmv;
   float t_spmv_t = 0.0;
@@ -72,6 +72,11 @@ int  bfs_gpu_td_csc_wa (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
   int *S_d;
   checkCudaErrors(cudaMalloc(reinterpret_cast<void **>(&S_d),sizeof(*S_d)*n));
   checkCudaErrors(cudaMemset(S_d,0,sizeof(*S_d)*n));
+
+  /*Allocate device memory for the vector r_d, and set r_d to zero. */
+  int *r_d;
+  checkCudaErrors(cudaMalloc(reinterpret_cast<void **>(&r_d),sizeof(*r_d)*n));
+  checkCudaErrors(cudaMemcpy(r_d,r,n*sizeof(*r_d),cudaMemcpyHostToDevice));
 
   /*Allocate device memory for the vector sigma_d */
   float *sigma_d;
@@ -103,7 +108,7 @@ int  bfs_gpu_td_csc_wa (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
       
       cudaEventRecord(start);
       checkCudaErrors(cudaMemset(ft_d,0,sizeof(*ft_d)*n));
-      spMvUgCscWaKernel <<<dimGrid_mvsp,THREADS_PER_BLOCK>>> (CP_d,IC_d,ft_d,f_d,sigma_d,d,r,n);
+      spMvUgCscWaKernel <<<dimGrid_mvsp,THREADS_PER_BLOCK>>> (CP_d,IC_d,ft_d,f_d,sigma_d,d,r_d,n);
       cudaEventRecord(stop);
       cudaEventSynchronize(stop);
       cudaEventElapsedTime(&t_spmv,start,stop);
@@ -158,22 +163,24 @@ int  bfs_gpu_td_csc_wa (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
  */
 __global__
 void spMvUgCscWaKernel (int *CP_d,int *IC_d,int *ft_d,int *f_d,
-			float *sigma_d,int d,int r,int n){
+			float *sigma_d,int d,int* r,int n){
 				   
   __shared__ volatile int cp [WARPS_PER_BLOCK][2];
 
   
-  //initialize f(r) and sigma(r)
-  if (d == 1){
-      f_d[r] = 1;
-      sigma_d[r] = 1.0;
-  }
+
   //compute spmv
   int thread_id = threadIdx.x + blockIdx.x * blockDim.x; //global thread index
   int thread_lane_id = thread_id & (THREADS_PER_WARP-1); //thread index within the warp
   int warp_id = thread_id/THREADS_PER_WARP; //global warp index
   int warp_lane_id = threadIdx.x/ THREADS_PER_WARP; //warp index within the block
   int num_warps =  WARPS_PER_BLOCK*gridDim.x;       //total number of available warps
+
+  //initialize f(r) and sigma(r)
+  if (d == 1 && r[warp_id]){
+      f_d[warp_id] = 1;
+      sigma_d[warp_id] = 1.0;
+  }
 
   int col;
   int icp;

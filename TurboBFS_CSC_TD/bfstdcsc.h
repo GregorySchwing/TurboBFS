@@ -24,6 +24,7 @@
 #define WARPS_PER_BLOCK (THREADS_PER_BLOCK/THREADS_PER_WARP)
 #define I_SIZE ((3/2)*THREADS_PER_BLOCK)
 
+#include <stdint.h>
 
 /*define Structure of Arrays (SoA) for the sparse matrix A representing
  unweighted graphs in the CSC format*/
@@ -41,7 +42,7 @@ struct Csc{
  * discovered.    
  *  
 */
-int bfs_seq_td_csc (int *IC,int *CP,int *S,float *sigma,int r,int nz,int n);
+int bfs_seq_td_csc (int *IC,int *CP,int *S,float *sigma,int *r,int nz,int n);
 
 /**************************************************************************/
 /* 
@@ -51,7 +52,7 @@ int bfs_seq_td_csc (int *IC,int *CP,int *S,float *sigma,int r,int nz,int n);
  * vertex is  discovered.
  *  
  */
-int  bfs_gpu_td_csc_sc (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
+int  bfs_gpu_td_csc_sc (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int *r,
 			int nz,int n,int repetition);
 
 /**************************************************************************/
@@ -62,7 +63,7 @@ int  bfs_gpu_td_csc_sc (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
  * vertex is discovered.
  *  
  */
-int  bfs_gpu_td_csc_wa (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
+int  bfs_gpu_td_csc_wa (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int *r,
 			int nz,int n,int repetition);
 
 /**************************************************************************/

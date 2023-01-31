@@ -34,7 +34,7 @@ extern "C"{
 
 /*************************prototype kernel*************************************/
 __global__ void spMvUgCscScKernel (int *CP_d,int *IC_d,int *ft_d,int *f_d,
-				   float *sigma_d,int j,int r,int n);
+				   float *sigma_d,int j,int* r,int n);
 /******************************************************************************/
 
 /* 
@@ -44,7 +44,7 @@ __global__ void spMvUgCscScKernel (int *CP_d,int *IC_d,int *ft_d,int *f_d,
  * vertex is  discovered.
  *  
  */
-int  bfs_gpu_td_csc_sc (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
+int  bfs_gpu_td_csc_sc (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int* r,
 			int nz,int n,int repetition){
   float t_spmv;
   float t_spmv_t = 0.0;
@@ -74,6 +74,11 @@ int  bfs_gpu_td_csc_sc (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
   checkCudaErrors(cudaMalloc(reinterpret_cast<void **>(&S_d),sizeof(*S_d)*n));
   checkCudaErrors(cudaMemset(S_d,0,sizeof(*S_d)*n));
 
+  /*Allocate device memory for the vector r_d, and set r_d to zero. */
+  int *r_d;
+  checkCudaErrors(cudaMalloc(reinterpret_cast<void **>(&r_d),sizeof(*r_d)*n));
+  checkCudaErrors(cudaMemcpy(r_d,r,n*sizeof(*r_d),cudaMemcpyHostToDevice));
+
   /*Allocate device memory for the vector sigma_d */
   float *sigma_d;
   checkCudaErrors(cudaMalloc(reinterpret_cast<void **>(&sigma_d),sizeof(*sigma_d)*n));
@@ -102,7 +107,7 @@ int  bfs_gpu_td_csc_sc (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
       *c = 0;
 
       cudaEventRecord(start);
-      spMvUgCscScKernel <<<dimGrid,THREADS_PER_BLOCK>>> (CP_d,IC_d,ft_d,f_d,sigma_d,d,r,n);
+      spMvUgCscScKernel <<<dimGrid,THREADS_PER_BLOCK>>> (CP_d,IC_d,ft_d,f_d,sigma_d,d,r_d,n);
       cudaEventRecord(stop);
       cudaEventSynchronize(stop);
       cudaEventElapsedTime(&t_spmv,start,stop);
@@ -158,14 +163,14 @@ int  bfs_gpu_td_csc_sc (int *IC_h,int *CP_h,int *S_h,float *sigma_h,int r,
  */
 __global__
 void spMvUgCscScKernel (int *CP_d,int *IC_d,int *ft_d,int *f_d,
-			float *sigma_d,int d,int r,int n){
+			float *sigma_d,int d,int* r,int n){
 
   int i = threadIdx.x + blockIdx.x * blockDim.x;
   if(i < n){
     //initialize f(r) and sigma(r)
-    if (d == 1){
-      f_d[r] = 1;
-      sigma_d[r] = 1.0;
+    if (d == 1& r[i]){
+      f_d[i] = 1;
+      sigma_d[i] = 1.0;
     }
     //compute spmv
     ft_d[i] = 0;

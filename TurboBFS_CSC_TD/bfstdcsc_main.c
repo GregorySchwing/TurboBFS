@@ -61,6 +61,8 @@
 #include "degree.h"
 #include "utils_bfs.h"
 
+#include <stdint.h>
+
 int main(int argc, char *argv[]){
 
   int ret_code;
@@ -143,6 +145,14 @@ int main(int argc, char *argv[]){
     if (w) valCLT = (float *) calloc(nz,sizeof(*valCLT));
     degree = (int *) calloc(N,sizeof(*degree));
   }
+
+  /* allocate start array */
+  int* rArr;
+  rArr = (int *) calloc((N),sizeof(*rArr));
+  srand(123);
+  for (int i = 0; i < N; ++i)
+    if (rand()%2)
+      rArr[i] = 1;
 
   /***************************************************************************
     read Matrix Market file and compute the in-degree and out-degree vectors            
@@ -275,7 +285,7 @@ int main(int argc, char *argv[]){
   **************************************************************************/
   initial_t = get_time();
   if (seq){// CSC format
-    bfs_seq_td_csc (CscA.IC,CscA.CP,S,sigma,r,nz,N);
+    bfs_seq_td_csc (CscA.IC,CscA.CP,S,sigma,rArr,nz,N);
     bfs_td_seq_t = get_time()-initial_t;
     printf("bfs td seq CSC time = %lfs\n", bfs_td_seq_t);
   }
@@ -285,7 +295,7 @@ int main(int argc, char *argv[]){
      by sparse adjacency matrices in the CSC format 
   **************************************************************************/
   if (format == 0){// CSC(sc) format
-    bfs_gpu_td_csc_sc (CscA.IC,CscA.CP,S_hgpu,sigma_hgpu,r,nz,N,repet);
+    bfs_gpu_td_csc_sc (CscA.IC,CscA.CP,S_hgpu,sigma_hgpu,rArr,nz,N,repet);
     if (seq){
       printf("\ncheck sigma in CSC(sc) format: ");
       bfs_check(sigma,sigma_hgpu,N);
@@ -293,7 +303,7 @@ int main(int argc, char *argv[]){
       S_check(S,S_hgpu,N);
     }
   }else if (format == 1){ // CSC(wa) format
-    bfs_gpu_td_csc_wa (CscA.IC,CscA.CP,S_hgpu,sigma_hgpu,r,nz,N,repet);
+    bfs_gpu_td_csc_wa (CscA.IC,CscA.CP,S_hgpu,sigma_hgpu,rArr,nz,N,repet);
     if (seq){
       printf("\ncheck sigma in CSC(wa) format: ");
       bfs_check(sigma,sigma_hgpu,N);

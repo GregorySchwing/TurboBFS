@@ -24,7 +24,7 @@
  *  
 */
 
-int bfs_seq_td_csc (int *IC,int *CP,int *S,float *sigma,int r,int nz,int n){
+int bfs_seq_td_csc (int *IC,int *CP,int *S,float *sigma,int* r,int nz,int n){
 
     int d = 0;
     int c = 1;
@@ -32,7 +32,9 @@ int bfs_seq_td_csc (int *IC,int *CP,int *S,float *sigma,int r,int nz,int n){
     float *f_t;
     f =  (float *) calloc(n,sizeof(*f));
     f_t =  (float *) calloc(n,sizeof(*f_t));
-    f[r] = 1;
+    for (int i = 0; i < n; i++)
+      if (r[i])
+        f[i] = 1;
 
     /* timing variables  */
     double initial_t;
